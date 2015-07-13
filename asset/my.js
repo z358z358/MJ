@@ -12,6 +12,7 @@ new Vue({
 
     logs:[],
     settingStep:-1,
+    dataSetting:false,
     windArray:[],
 
     s: {
@@ -19,7 +20,8 @@ new Vue({
         point : 10, // 一台多少錢
         wind_no : 0, // 在哪個風 東風東=0 東風南=1 北風北=15
         banker_count : 0, // 連莊數
-        next_banker_count : 0 // 下一輪 莊連
+        next_banker_count : 0, // 下一輪 莊連
+        showMoney: false
     },    
     winType:['胡', '自摸', '流局', '自行輸入log'],
     winds: ['東' , '南' , '西' , '北'],
@@ -74,6 +76,12 @@ new Vue({
 
   },
 
+  filters: {
+    showMoney: function (price) {
+      return (this.s.showMoney) ? price*this.s.point : price;
+    }
+  },
+
   ready: function(){
     this.init('first');    
   },
@@ -108,7 +116,7 @@ new Vue({
 
         this.logs.map(function(log){
             log.log.map(function(count,index){
-                count = parseInt(count, 10);
+                count = parseFloat(count, 10);
                 if(count) that.users[index].money += count;
             });
         });
@@ -120,7 +128,7 @@ new Vue({
 
     changeDetail: function(){
         var s = this.s;
-        var sumPoint = this.s.basic;
+        var sumPoint = parseFloat(this.s.basic);
         var kinds = this.kinds;
         var nextWind = (this.s.wind_no+1)%4;
         var log = [0,0,0,0];
@@ -135,6 +143,9 @@ new Vue({
             //console.log(kinds[index]['name']);
         });
         //console.log(sumPoint);
+        if(this.winNo == '2'){
+            note += ' ' + '流局';
+        }
 
         s.next_banker_count = 0;
 
@@ -149,7 +160,9 @@ new Vue({
 
         // 自摸
         if(this.winNo == '1'){
-            sumPoint++;
+            console.log(sumPoint);
+            sumPoint = sumPoint + 1;
+            console.log(sumPoint);
             sumPoint *= -1;
             var banker = sumPoint - banker_point;
             // 莊家自摸
@@ -210,15 +223,21 @@ new Vue({
         data('mjLogs', this.logs);
     },
 
-    deleteLog: function(){
-        var tmp = this.logs.shift();
-
-        // 有連莊
-        if(this.s.banker_count > 0){
-            this.s.banker_count--;
+    deleteLog: function(type){
+        if(type == 'all'){
+            this.s.banker_count = this.s.wind_no = 0;
+            this.logs = [];
         }
-        else {
-            this.s.wind_no = tmp.wind_count*4 + tmp.wind_count2;
+        else{
+            var tmp = this.logs.shift();
+
+            // 有連莊
+            if(this.s.banker_count > 0){
+                this.s.banker_count--;
+            }
+            else {
+                this.s.wind_no = tmp.wind_count*4 + tmp.wind_count2;
+            }           
         }
 
         this.init();
@@ -240,6 +259,16 @@ new Vue({
             this.init();
         }
 
+    },
+
+    removeKind: function(kind){
+        this.kinds.$remove(kind.$data);
+        this.init();
+    },
+
+    addKind: function(){
+        this.kinds.unshift({name:'',point:''});
+        this.init();
     }
 
   }

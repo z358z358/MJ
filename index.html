@@ -35,7 +35,6 @@
 
   <body>
     <div id="mj" class="container">
-
         <div class="page-header">
             <h1>麻將紀錄</h1>
             <p class="lead">紀錄麻將每回合的結果</p>
@@ -43,6 +42,39 @@
 
         <h3>資訊</h3>
         <button class="btn btn-default" v-on="click:setWind(999)">修改玩家</button>
+        <button class="btn btn-default" v-on="click:dataSetting = !dataSetting">修改設定</button>
+        <form class="form-inline" v-show="dataSetting">
+            <div>
+                <button type="button" class="btn btn-primary" v-on="click:dataSetting = false">確定</button>
+            </div>
+            <div class="form-group">
+                <label>底幾台</label>
+                <input type="number" class="form-control" v-model="s.basic">
+            </div>
+            <div class="form-group">
+                <label>一台多少錢</label>
+                <input type="number" class="form-control" v-model="s.point">
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" v-model="s.showMoney"> 顯示為金錢
+                </label>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary" v-on="click:addKind">新增台數選項</button>
+            </div>
+            <div v-repeat="kinds">
+                <div class="form-group">
+                    <label>名稱</label>
+                    <input type="text" class="form-control" v-model="name">
+                </div>
+                <div class="form-group">
+                    <label>台數</label>
+                    <input type="number" class="form-control " v-model="point">
+                </div>
+                <button type="button" class="btn btn-danger" v-on="click:removeKind(this)">刪除</button>
+            </div>
+        </form>
         <div v-show="settingStep >= 0">
             <form class="form-horizontal">
                 <div class="form-group">
@@ -55,12 +87,13 @@
                 </div>
             </form>
         </div>
-        <p><span v-text="winds[wind_count]"></span>風<span v-text="winds[wind_count2]"></span>， <span v-text="users[banker].name"></span>當莊 ，連莊數:<strong v-text="s.banker_count"></strong></p>
+        <h5><span v-text="winds[wind_count]"></span>風<span v-text="winds[wind_count2]"></span>， <span v-text="users[banker].name"></span>當莊 ，連莊數:<strong v-text="s.banker_count"></strong></h5>
         <div class="row">
-            <div class="col-xs-3" v-repeat="users | orderBy 'wind'">
+            <div class="col-xs-3" v-repeat="users | orderBy 'wind'" v-class="bg-success: wind_count2 == wind">
                 <h4 v-text="name"></h4>
+                <kbd v-if="wind_count2 == wind && s.banker_count" v-text="'x'+s.banker_count"></kbd>
                 <kbd v-text="winds[wind]"></kbd>
-                <strong v-text="money" v-class="red:money<0"></strong>
+                <strong v-text="money | showMoney" v-class="red:money<0"></strong>
             </div>            
         </div>
 
@@ -104,9 +137,18 @@
                     台數
                 </div>
                 <div class="col-xs-offset-3">
-                    <label class="checkbox-inline" v-repeat="kinds">
-                        <input type="checkbox" name="num" v-model="kindArray[$index]" v-on="click: changeDetail()"> <span v-text="name"></span>
-                    </label>                
+                    <label class="checkbox-inline" v-repeat="kinds" v-show="point == 1">
+                        <input type="checkbox" name="num" v-model="kindArray[$index]" v-on="click: changeDetail()" > 
+                        <span class="text-muted" v-text="name"></span>                                                  
+                    </label>   
+                    <label class="checkbox-inline" v-repeat="kinds" v-show="point == 2">
+                        <input type="checkbox" name="num" v-model="kindArray[$index]" v-on="click: changeDetail()"> 
+                        <span class="text-primary" v-text="name"></span>  
+                    </label>   
+                    <label class="checkbox-inline " v-repeat="kinds" v-show="point > 2"> 
+                        <input type="checkbox" name="num" v-model="kindArray[$index]" v-on="click: changeDetail()"> 
+                        <span class="text-danger" v-text="name"></span>                         
+                    </label>               
                 </div>            
             </div>
             <button class="btn btn-primary" v-show="(winNo == 0 && userWin >= 0 && userLose >= 0) || (winNo == 1 && userWin >= 0) || winNo == 2" v-on="click: set=2">Go</button>
@@ -155,12 +197,9 @@
             </div>
             <button class="btn btn-primary" v-on="click: insertLog()">確認無誤</button>
             <button class="btn btn-default" v-on="click: set=1">回上一步</button>
-        </div>
+        </div>       
 
-        <button class="btn btn-primary" v-show="set == 0" v-on="click: set=1">新增紀錄</button>
-        <button class="btn btn-danger" v-show="set == 0 && logs.length" v-on="click: deleteLog()">刪除最新一筆紀錄</button>
-
-        <h3>記錄區</h3>
+        <h3>記錄區 <button class="btn btn-primary" v-show="set == 0" v-on="click: set=1">新增紀錄</button></h3>
         <div class="table-responsive">            
             <table class="table table-hover table-striped">
                 <thead>
@@ -179,7 +218,11 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div>              
+        <button class="btn btn-danger" v-show="set == 0 && logs.length" v-on="click: deleteLog()">刪除最新一筆紀錄</button>
+        <button class="btn btn-danger" v-show="set == 0 && logs.length" v-on="click: deleteLog('all')">刪除所有紀錄</button>
+
+
     <pre>{{ $data | json}}</pre>
 
     </div>
