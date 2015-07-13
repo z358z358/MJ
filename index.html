@@ -42,9 +42,22 @@
         </div>
 
         <h3>資訊</h3>
+        <button class="btn btn-default" v-on="click:setWind(999)">修改玩家</button>
+        <div v-show="settingStep >= 0">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-xs-2">
+                        <input v-model="users[settingStep]['name']">
+                    </div>
+                    <div class="col-xs-10">                         
+                        是<button type="button" class="btn btn-default btn-lg" v-repeat="winds" v-show="windArray.indexOf($index) == -1" v-on="click: setWind($index)" v-text="$value"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
         <p><span v-text="winds[wind_count]"></span>風<span v-text="winds[wind_count2]"></span>， <span v-text="users[banker].name"></span>當莊 ，連莊數:<strong v-text="s.banker_count"></strong></p>
         <div class="row">
-            <div class="col-xs-3" v-repeat="users">
+            <div class="col-xs-3" v-repeat="users | orderBy 'wind'">
                 <h4 v-text="name"></h4>
                 <kbd v-text="winds[wind]"></kbd>
                 <strong v-text="money" v-class="red:money<0"></strong>
@@ -108,7 +121,7 @@
                 </div>
                 <label class="col-xs-2" v-repeat="users">
                   <span v-text="name"></span>
-                  <input class="col-xs-8 no-padding" type="text" v-model="log[$index]">
+                  <input class="col-xs-8 no-padding" type="number" v-model="log[$index]">
                 </label>     
             </div>
 
@@ -145,7 +158,7 @@
         </div>
 
         <button class="btn btn-primary" v-show="set == 0" v-on="click: set=1">新增紀錄</button>
-        <button class="btn btn-danger" v-show="set == 0 && logs.length" v-on="dblclick: deleteLog()">按兩下 刪除最新一筆紀錄</button>
+        <button class="btn btn-danger" v-show="set == 0 && logs.length" v-on="click: deleteLog()">刪除最新一筆紀錄</button>
 
         <h3>記錄區</h3>
         <div class="table-responsive">            

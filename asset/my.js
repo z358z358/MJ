@@ -8,10 +8,11 @@ new Vue({
         {name:'玩家2', wind:1, money:0, no:1},
         {name:'玩家3', wind:2, money:0, no:2},
         {name:'玩家4', wind:3, money:0, no:3}
-
     ],
 
     logs:[],
+    settingStep:-1,
+    windArray:[],
 
     s: {
         basic : 2, // 底幾台
@@ -83,6 +84,7 @@ new Vue({
         if(type == 'first'){
             this.logs = (data('mjLogs')) ? data('mjLogs') : [];
             this.s = (data('s')) ? data('s') : this.s;
+            this.users = (data('users')) ? data('users') : this.users;
         }
         
         var banker = $.grep(this.users, function(e){ return e.wind == (that.s.wind_no)%4; } )[0]['no'];
@@ -113,6 +115,7 @@ new Vue({
 
         data('s', this.s);
         data('mjLogs', this.logs);
+        data('users', this.users);
     },
 
     changeDetail: function(){
@@ -217,9 +220,28 @@ new Vue({
         else {
             this.s.wind_no = tmp.wind_count*4 + tmp.wind_count2;
         }
-        
+
         this.init();
+    },
+
+    setWind: function(num){
+        if(num == 999){
+            this.settingStep = 0;
+            this.windArray = [];
+            return;
+        }
+        else{
+            this.users[this.settingStep].wind = num;
+            this.windArray.push(num);
+        }
+        this.settingStep++;
+        if(this.settingStep >= 4){
+            this.settingStep = -1;
+            this.init();
+        }
+
     }
+
   }
 
 });
