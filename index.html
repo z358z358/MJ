@@ -34,11 +34,11 @@
     <div id="mj" class="container">
         <div class="page-header">
             <h1>麻將紀錄</h1>
-            <p class="lead">紀錄麻將每回合的結果</p>
-        </div>
-        
-        <button class="btn btn-default" v-class="disabled:settingStep != -1" v-on="click:setWind(999)">修改玩家</button>        
-        <button class="btn btn-default" v-on="click:saveKind()">修改設定</button>        
+            <p class="lead">紀錄麻將每回合的結果
+                <button class="btn btn-default" v-class="disabled:settingStep != -1" v-on="click:setWind(999)">修改玩家</button>        
+                <button class="btn btn-default" v-on="click:saveKind()">修改設定</button>  
+            </p>                  
+        </div>     
 
         <div class="row" v-show="dataSetting">
             <div class="row margin">                
@@ -79,6 +79,7 @@
                 <button type="button" class="btn btn-danger col-xs-2" v-on="click:removeKind(this)">刪除</button>
             </div>
             <div class="clearfix"></div>
+            <hr>
         </div> 
 
         <div v-show="settingStep >= 0">
@@ -89,9 +90,9 @@
             <div class="col-xs-8">
                 <button type="button" class="btn btn-default col-xs-6 col-sm-2" v-repeat="winds" v-show="windArray.indexOf($index) == -1" v-on="click: setWind($index)" v-text="$value"></button> 
             </div>
-        </div> 
-        <div class="clearfix"></div>
-        <hr>
+            <div class="clearfix"></div>
+            <hr>
+        </div>
 
         <h3>資訊</h3>
         <h5><kbd v-text="winds[wind_count]"></kbd>風<kbd v-text="winds[wind_count2]"></kbd>， <kbd v-text="users[banker].name"></kbd>當莊 ，連莊數:<strong v-text="s.banker_count"></strong></h5>
