@@ -222,9 +222,9 @@
                 </tbody>
             </table>
         </div>              
-        <button class="btn btn-danger" v-show="set == 0 && logs.length" v-on="click: deleteLog()">刪除最新一筆紀錄</button>
-        <button class="btn btn-danger" v-show="set == 0 && logs.length" v-on="click: deleteLog('all')">刪除所有紀錄</button>
-        <button class="btn btn-danger" v-on="click: reset()">回復初始設定</button>
+        <button class="btn btn-danger btn-block" v-show="set == 0 && logs.length" v-on="click: deleteLog()">刪除最新一筆紀錄</button>
+        <button class="btn btn-danger btn-block" v-show="set == 0 && logs.length" v-on="click: deleteLog('all')">刪除所有紀錄</button>
+        <button class="btn btn-danger btn-block" v-on="click: reset()">回復初始設定</button>
 
         <!-- ad -->
         <ins class="adsbygoogle"
