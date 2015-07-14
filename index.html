@@ -24,9 +24,6 @@
     .no-padding{
         padding: 0;
     } 
-    .no-visibe{
-        visibility: hidden;
-    }
     </style>
   </head>
 
@@ -36,8 +33,7 @@
             <h1>麻將紀錄</h1>
             <p class="lead">紀錄麻將每回合的結果</p>
         </div>
-
-        <h3>資訊</h3>
+        
         <button class="btn btn-default" v-on="click:setWind(999)">修改玩家</button>
         <button class="btn btn-default" v-on="click:dataSetting = !dataSetting">修改設定</button>
         <form class="form-inline" v-show="dataSetting">
@@ -75,13 +71,17 @@
         <div v-show="settingStep >= 0">
             <h4>修改玩家名稱，風位</h4>
             <div class="col-md-3 col-xs-4">
-                <input class="col-xs-12" v-model="users[settingStep]['name']" placeholder="玩家名稱">
+                <input class="col-xs-12" v-model="users[settingStep]['name']" placeholder="名稱">
             </div>
             <div class="col-xs-8">
-                <button type="button" class="btn btn-default btn-lg" v-repeat="winds" v-show="windArray.indexOf($index) == -1" v-on="click: setWind($index)" v-text="$value"></button>
+                <button type="button" class="btn btn-default visible-xs col-xs-2" v-repeat="winds" v-show="windArray.indexOf($index) == -1" v-on="click: setWind($index)" v-text="$value"></button>
+                <button type="button" class="btn btn-default btn-lg hidden-xs" v-repeat="winds" v-show="windArray.indexOf($index) == -1" v-on="click: setWind($index)" v-text="$value"></button>
             </div>
         </div>
         <div class="clearfix"></div>
+        <hr>
+
+        <h3>資訊</h3>
         <h5><kbd v-text="winds[wind_count]"></kbd>風<kbd v-text="winds[wind_count2]"></kbd>， <kbd v-text="users[banker].name"></kbd>當莊 ，連莊數:<strong v-text="s.banker_count"></strong></h5>
         <div class="row">
             <div class="col-xs-3" v-repeat="users | orderBy 'wind'" v-class="bg-success: wind_count2 == wind">
@@ -91,6 +91,7 @@
                 <strong v-text="money | showMoney" v-class="text-danger:money<0"></strong>
             </div>            
         </div>
+        <hr>
 
         <div v-show="set == 1">
             <h3>新增</h3>
