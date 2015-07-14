@@ -7,6 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="icon" href="asset/favicon.ico">
 
     <title>麻將紀錄</title>
 
@@ -30,6 +31,7 @@
   </head>
 
   <body>
+  <a href="https://github.com/z358z358/MJ"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
     <div id="mj" class="container">
         <div class="page-header">
             <h1>麻將紀錄</h1>
@@ -109,7 +111,7 @@
         <div v-show="set == 1">
             <h3>新增</h3>
             <div class="row">
-                <div class="col-xs-offset-1 col-xs-2">
+                <div class="col-xs-3 col-sm-offset-1 col-sm-2">
                     類型
                 </div>
                 <div>
@@ -120,7 +122,7 @@
             </div>
 
             <div class="row" v-show="winNo == 0 || winNo == 1">
-                <div class="col-xs-offset-1 col-xs-2">
+                <div class="col-xs-3 col-sm-offset-1 col-sm-2">
                     贏家
                 </div>
                 <div>
@@ -131,7 +133,7 @@
             </div>
 
             <div class="row" v-show="winNo == 0 && userWin >= 0">
-                <div class="col-xs-offset-1 col-xs-2">
+                <div class="col-xs-3 col-sm-offset-1 col-sm-2">
                     輸家
                 </div>
                 <span v-repeat="users">
@@ -142,7 +144,7 @@
             </div>
 
             <div class="row" v-show="(winNo == 0 && userWin >= 0 && userLose >= 0) || (winNo == 1 && userWin >= 0)">
-                <div class="col-xs-offset-1 col-xs-2">
+                <div class="col-xs-3 col-sm-offset-1 col-sm-2">
                     台數
                 </div>
                 <div class="col-xs-offset-3">
@@ -225,9 +227,9 @@
                 </tbody>
             </table>
         </div>              
-        <button class="btn btn-danger btn-block" v-show="set == 0 && logs.length" v-on="click: deleteLog()">刪除最新一筆紀錄</button>
-        <button class="btn btn-danger btn-block" v-show="set == 0 && logs.length" v-on="click: deleteLog('all')">刪除所有紀錄</button>
-        <button class="btn btn-danger btn-block" v-on="click: reset()">回復初始設定</button>
+        <button class="btn btn-danger" v-show="set == 0 && logs.length" v-on="click: deleteLog()">刪除最新一筆紀錄</button>
+        <button class="btn btn-danger" v-show="set == 0 && logs.length" v-on="click: deleteLog('all')">刪除所有紀錄</button>
+        <button class="btn btn-danger margin" v-on="click: reset()">回復初始設定</button>
 
         <!-- ad -->
         <ins class="adsbygoogle"
