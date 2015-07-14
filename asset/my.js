@@ -93,6 +93,7 @@ new Vue({
             this.logs = (data('mjLogs')) ? data('mjLogs') : [];
             this.s = (data('s')) ? data('s') : this.s;
             this.users = (data('users')) ? data('users') : this.users;
+            this.kinds = (data('kinds')) ? data('kinds') : this.kinds;
         }
         
         var banker = $.grep(this.users, function(e){ return e.wind == (that.s.wind_no)%4; } )[0]['no'];
@@ -124,6 +125,7 @@ new Vue({
         data('s', this.s);
         data('mjLogs', this.logs);
         data('users', this.users);
+        data('kinds', this.kinds);
     },
 
     changeDetail: function(){
@@ -266,18 +268,40 @@ new Vue({
     addKind: function(){
         this.kinds.unshift({name:'',point:''});
         this.init();
+    },
+
+    saveKind: function(){
+        this.dataSetting = !this.dataSetting;
+        this.init();
+    },
+
+    reset: function(){
+        data('' , '', 'del');
+        location.reload( );
     }
 
   }
 
 });
 
-function data(key, value){
+function data(key, value, del){
     var type = (localStorage) ? 's' : 'cookie' ;
     var re;
 
-    // 寫
-    if(value !== undefined){
+    // 清空
+    if(del !== undefined){
+        if(type == 's'){
+            re = localStorage.clear();;
+        }
+        else{
+            var cookies = $.cookie();
+            for(var cookie in cookies) {
+               $.removeCookie(cookie);
+            }
+        }
+    }
+    // 寫 
+    else if(value !== undefined){
         if(type == 's'){
             re = localStorage.setItem(key, JSON.stringify(value));
         }

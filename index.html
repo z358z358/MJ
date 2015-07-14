@@ -24,6 +24,9 @@
     .no-padding{
         padding: 0;
     } 
+    .margin{
+        margin: 2.5px 0 2.5px 0;
+    }
     </style>
   </head>
 
@@ -35,47 +38,54 @@
         </div>
         
         <button class="btn btn-default" v-on="click:setWind(999)">修改玩家</button>
-        <button class="btn btn-default" v-on="click:dataSetting = !dataSetting">修改設定</button>
-        <form class="form-inline" v-show="dataSetting">
-            <div>
-                <button type="button" class="btn btn-primary" v-on="click:dataSetting = false">確定</button>
+        <button class="btn btn-default" v-on="click:saveKind()">修改設定</button>
+        <div class="row" v-show="dataSetting">
+            <div class="row margin">                
+                <div class="col-xs-7 col-sm-5">
+                    <label>
+                        <input type="checkbox" v-model="s.showMoney"> 顯示為金錢
+                    </label>
+                </div>
+                <div class="col-xs-5 col-sm-3">
+                    <button type="button" class="btn btn-primary" v-on="click:saveKind()">確定</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label>底幾台</label>
+
+            <div class="row margin">
+            <div class="col-xs-6 col-sm-4">
+                底幾台
                 <input type="number" class="form-control" v-model="s.basic">
             </div>
-            <div class="form-group">
+            <div class="col-xs-6 col-sm-4">
                 <label>一台多少錢</label>
                 <input type="number" class="form-control" v-model="s.point">
             </div>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" v-model="s.showMoney"> 顯示為金錢
-                </label>
+            </div>        
+
+            <div class="col-xs-12 col-sm-8 margin">
+                <label class="col-xs-5">名稱</label>
+                <label class="col-xs-3">台數</label>
+                <button type="button" class="btn btn-primary col-xs-2" v-on="click:addKind">新增</button>
             </div>
-            <div>
-                <button type="button" class="btn btn-primary" v-on="click:addKind">新增台數選項</button>
-            </div>
-            <div v-repeat="kinds">
-                <div class="form-group">
-                    <label>名稱</label>
+
+            <div class="col-sm-8 col-xs-12 margin" v-repeat="kinds">
+                <div class="col-xs-5">                    
                     <input type="text" class="form-control" v-model="name">
                 </div>
-                <div class="form-group">
-                    <label>台數</label>
+                <div class="col-xs-3">
                     <input type="number" class="form-control " v-model="point">
                 </div>
-                <button type="button" class="btn btn-danger" v-on="click:removeKind(this)">刪除</button>
+                <button type="button" class="btn btn-danger col-xs-2" v-on="click:removeKind(this)">刪除</button>
             </div>
-        </form>
+            <div class="clearfix"></div>
+        </div>
         <div v-show="settingStep >= 0">
             <h4>修改玩家名稱，風位</h4>
             <div class="col-md-3 col-xs-4">
                 <input class="col-xs-12" v-model="users[settingStep]['name']" placeholder="名稱">
             </div>
             <div class="col-xs-8">
-                <button type="button" class="btn btn-default visible-xs col-xs-2" v-repeat="winds" v-show="windArray.indexOf($index) == -1" v-on="click: setWind($index)" v-text="$value"></button>
-                <button type="button" class="btn btn-default btn-lg hidden-xs" v-repeat="winds" v-show="windArray.indexOf($index) == -1" v-on="click: setWind($index)" v-text="$value"></button>
+                <button type="button" class="btn btn-default col-xs-6 col-sm-2" v-repeat="winds" v-show="windArray.indexOf($index) == -1" v-on="click: setWind($index)" v-text="$value"></button> 
             </div>
         </div>
         <div class="clearfix"></div>
@@ -204,7 +214,7 @@
                 <tbody v-repeat="logs">
                     <tr v-on="click: showLog(this)">
                         <td v-text="winds[wind_count]"></td>
-                        <td v-repeat="log" v-text="$value" v-class="text-danger : $value<0"></td>
+                        <td v-repeat="log" v-text="$value | showMoney" v-class="text-danger : $value<0"></td>
                     </tr>
                     <tr v-show="show">
                         <td colspan="5"><abbr class="timeago" title="{{ts}}">{{ts}}</abbr> {{ winds[wind_count]}}風{{ winds[wind_count2]}} <span v-text="note"></span></td>                        
@@ -214,11 +224,16 @@
         </div>              
         <button class="btn btn-danger" v-show="set == 0 && logs.length" v-on="click: deleteLog()">刪除最新一筆紀錄</button>
         <button class="btn btn-danger" v-show="set == 0 && logs.length" v-on="click: deleteLog('all')">刪除所有紀錄</button>
-
-
-    <pre>{{ $data | json}}</pre>
-
+        <button class="btn btn-danger" v-on="click: reset()">回復初始設定</button>
     </div>
+
+    <!-- ad -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-5518310153941700"
+         data-ad-slot="5554403276"
+         data-ad-format="auto"></ins>
+
 
     <script src="asset/jquery-1.11.3.min.js"></script>
     <script src="asset/jquery.cookie.js"></script>
@@ -226,6 +241,13 @@
     <script src="asset/bootstrap.min.js"></script>
     <script src="asset/vue.min.js"></script>
     <script src="asset/my.js"></script>
+    <!-- google ad -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <!-- ga -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
