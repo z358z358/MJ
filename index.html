@@ -37,8 +37,9 @@
             <p class="lead">紀錄麻將每回合的結果</p>
         </div>
         
-        <button class="btn btn-default" v-on="click:setWind(999)">修改玩家</button>
-        <button class="btn btn-default" v-on="click:saveKind()">修改設定</button>
+        <button class="btn btn-default" v-class="disabled:settingStep != -1" v-on="click:setWind(999)">修改玩家</button>        
+        <button class="btn btn-default" v-on="click:saveKind()">修改設定</button>        
+
         <div class="row" v-show="dataSetting">
             <div class="row margin">                
                 <div class="col-xs-7 col-sm-5">
@@ -78,7 +79,8 @@
                 <button type="button" class="btn btn-danger col-xs-2" v-on="click:removeKind(this)">刪除</button>
             </div>
             <div class="clearfix"></div>
-        </div>
+        </div> 
+
         <div v-show="settingStep >= 0">
             <h4>修改玩家名稱，風位</h4>
             <div class="col-md-3 col-xs-4">
@@ -87,17 +89,17 @@
             <div class="col-xs-8">
                 <button type="button" class="btn btn-default col-xs-6 col-sm-2" v-repeat="winds" v-show="windArray.indexOf($index) == -1" v-on="click: setWind($index)" v-text="$value"></button> 
             </div>
-        </div>
-        <div class="clearfix"></div>
-        <hr>
+        </div>       
+        <hr class="clearfix">
 
         <h3>資訊</h3>
         <h5><kbd v-text="winds[wind_count]"></kbd>風<kbd v-text="winds[wind_count2]"></kbd>， <kbd v-text="users[banker].name"></kbd>當莊 ，連莊數:<strong v-text="s.banker_count"></strong></h5>
+
         <div class="row">
             <div class="col-xs-3" v-repeat="users | orderBy 'wind'" v-class="bg-success: wind_count2 == wind">
-                <h4 v-text="name"></h4>
-                <kbd v-if="wind_count2 == wind && s.banker_count" v-text="'x'+s.banker_count"></kbd>
-                <kbd v-text="winds[wind]"></kbd>
+                <h4 v-text="name"></h4>                
+                <kbd v-text="winds[wind]"></kbd>                
+                <kbd v-if="wind_count2 == wind && s.banker_count" v-text="'x'+s.banker_count"></kbd><br>
                 <strong v-text="money | showMoney" v-class="text-danger:money<0"></strong>
             </div>            
         </div>
@@ -164,9 +166,9 @@
         <div v-show="set == 2">
             <h3>明細</h3>
             <div class="row">
-                <label class="col-xs-3" v-repeat="users">
-                  <span class="col-xs-5 no-padding" v-text="name"></span>
-                  <input class="col-xs-7 no-padding" type="number" v-model="log[$index]">
+                <label class="col-xs-6 col-sm-3" v-repeat="users">
+                  <span class="col-xs-6 col-sm-5 no-padding" v-text="name"></span>
+                  <input class="col-xs-6 col-sm-7 no-padding" type="number" v-model="log[$index]">
                 </label>     
             </div>
 
@@ -182,7 +184,7 @@
             </div>-->
 
             <div class="row">
-                <div class="col-md-2 col-xs-3">
+                <div class="col-md-2 col-xs-4">
                     下一局連莊數
                 </div>
                 <div class="col-xs-4">
@@ -191,10 +193,10 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2 col-xs-3">
+                <div class="col-md-1 col-md-offset-1 col-xs-3 col-xs-offset-1">
                     備註
                 </div>
-                <div class="col-xs-9">
+                <div class="col-xs-8">
                     <input type="text" name="note" v-model="note"> 
                 </div>
             </div>
