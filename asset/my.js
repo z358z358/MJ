@@ -160,9 +160,8 @@ new Vue({
 
         // 自摸
         if(this.winNo == '1'){
-            console.log(sumPoint);
+            note += ' ' + '自摸';
             sumPoint = sumPoint + 1;
-            console.log(sumPoint);
             sumPoint *= -1;
             var banker = sumPoint - banker_point;
             // 莊家自摸
@@ -194,8 +193,6 @@ new Vue({
 
         this.log = log;
         this.note = note;
-
-        console.log(log);
     },
 
     insertLog: function(){
