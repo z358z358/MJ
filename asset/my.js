@@ -27,7 +27,7 @@ new Vue({
     winds: ['東' , '南' , '西' , '北'],
     kinds:[
         {name:'門清', point:1},
-        {name:'門清(自摸)', point:2},
+        {name:'門清一摸三', point:2},
         {name:'風台', point:1},
         {name:'雙風台', point:2},
         {name:'三元台', point:1},
@@ -138,7 +138,7 @@ new Vue({
         var nextWind = (this.s.wind_no+1)%4;
         var log = [0,0,0,0];
         var banker_point = (this.s.banker_count * 2) + 1; // 連莊台數
-        var note = (this.s.banker_count > 0) ? '莊連' + this.s.banker_count : '';
+        var note = '';
         this.banker_done = false;
         s.next_banker_count = 0;
 
@@ -178,8 +178,10 @@ new Vue({
         }
         // 胡了
         else if(this.winNo == '0'){
+            this.banker_done = true;
             // 莊家胡了
             if(this.userWin == this.banker){
+                this.banker_done = false;
                 note = '莊家' + ' ' + note;
                 sumPoint += banker_point;
                 s.next_banker_count = s.banker_count + 1;
@@ -187,7 +189,6 @@ new Vue({
             // 莊家被胡
             else if(this.userLose == this.banker){
                 note = '莊家' + ' ' + note;
-                this.banker_done = true;
                 sumPoint += banker_point;
             }
             log[this.userWin] = sumPoint;
@@ -201,6 +202,8 @@ new Vue({
         for (var i = log.length - 1; i >= 0; i--) {
             log[i] = (log[i]) ? log[i] : '';
         };
+
+        note = (log[this.banker] && this.s.banker_count > 0) ? note + ' 莊連' + this.s.banker_count : note;
 
         this.log = log;
         this.note = note;
