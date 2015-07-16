@@ -147,7 +147,7 @@
                             </label> 
                             <label class="radio-inline" v-repeat="users">
                                 <input type="radio" value="{{ $index }}" v-model="userWin" v-on="click: changeDetail()">
-                                <span v-text="name"></span>
+                                <span v-text="name" v-class="text-success: wind_count2 == wind"></span>
                             </label>            
                         </div>
 
@@ -157,7 +157,7 @@
                             </label> 
                             <label class="radio-inline" v-repeat="users" v-show="$index != userWin">
                                 <input type="radio" value="{{ $index }}" v-model="userLose" v-on="click: changeDetail()"> 
-                                <span v-text="name"></span>
+                                <span v-text="name" v-class="text-success: wind_count2 == wind"></span>
                             </label>          
                         </div>
 
@@ -178,7 +178,7 @@
                     <div v-show="set == 2">
                         <div class="row">
                             <label class="col-xs-6 col-sm-3" v-repeat="users">
-                              <span class="col-xs-6 col-sm-5 no-padding" v-text="name"></span>
+                              <span class="col-xs-6 col-sm-5 no-padding" v-text="name" v-class="text-success: wind_count2 == wind"></span>
                               <input class="col-xs-6 col-sm-7 no-padding" type="number" v-model="log[$index]">
                             </label>     
                         </div>
