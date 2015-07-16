@@ -89,6 +89,7 @@ new Vue({
   methods:{
     init: function(type){
         var that = this;
+        var tmpKinds = [];
         if(type == 'first'){
             this.logs = (data('mjLogs')) ? data('mjLogs') : [];
             this.s = (data('s')) ? data('s') : this.s;
@@ -103,16 +104,18 @@ new Vue({
         this.$set('userWin', -1);
         this.$set('userLose', -1);
         this.$set('set', 0);
-        this.$set('kindArray', []);
         this.$set('note', '');
         this.$set('banker', banker);
+        this.$set('banker_done', false);
+        this.$set('delBtn', 0);
 
         for (var i = this.users.length - 1; i >= 0; i--) {
             this.users[i]['money'] = 0;
         };
 
-        this.kinds.sort(function(a, b) {
-            return parseFloat(a.point) - parseFloat(b.point);
+        this.kinds.map(function(kind) {
+            kind.$set('chk' ,false);
+            tmpKinds.push(kind);
         });
 
         this.logs.map(function(log){
@@ -125,7 +128,7 @@ new Vue({
         data('s', this.s);
         data('mjLogs', this.logs);
         data('users', this.users);
-        data('kinds', this.kinds);
+        data('kinds', tmpKinds);
     },
 
     changeDetail: function(){
@@ -136,44 +139,38 @@ new Vue({
         var log = [0,0,0,0];
         var banker_point = (this.s.banker_count * 2) + 1; // 連莊台數
         var note = (this.s.banker_count > 0) ? '莊連' + this.s.banker_count : '';
-
-        this.kindArray.forEach(function(b, index){
-            if(b == true && kinds[index]) {
-                sumPoint+= kinds[index]['point'];
-                note = note + ' ' + kinds[index]['name'];
-            }
-            //console.log(kinds[index]['name']);
-        });
-        //console.log(sumPoint);
-        if(this.winNo == '2'){
-            note += ' ' + '流局';
-        }
-
+        this.banker_done = false;
         s.next_banker_count = 0;
 
-        // 莊家胡了 or 流局
-        if(this.userWin == this.banker || this.winNo == '2'){
-            s.next_banker_count = s.banker_count + 1;
-        }
-        // 莊家被胡
-        else if(this.userLose == this.banker){
-            sumPoint += banker_point;
-        }
+        kinds.map(function(kind){
+            if(kind.chk == true) {
+                sumPoint+= kind['point'];
+                note = note + ' ' + kind['name'];
+            }            
+        });
 
+        // 劉菊
+        if(this.winNo == '2'){
+            note += ' 流局';
+            s.next_banker_count = s.banker_count + 1;
+        }      
         // 自摸
-        if(this.winNo == '1'){
-            note += ' ' + '自摸';
+        else if(this.winNo == '1'){
+            note = '自摸 ' + note;
             sumPoint = sumPoint + 1;
             sumPoint *= -1;
             var banker = sumPoint - banker_point;
             // 莊家自摸
             if(this.userWin == this.banker){
+                note = '莊家 ' + note;
                 s.next_banker_count = s.banker_count + 1;
                 sumPoint = banker;
                 log = [sumPoint , sumPoint , sumPoint , sumPoint];
                 log[this.userWin] = sumPoint * -3;
             }
-            else {                
+            else {        
+                this.banker_done = true;    
+                note = note + ' 莊家';    
                 log = [sumPoint , sumPoint , sumPoint , sumPoint];
                 log[this.banker] = banker;
                 log[this.userWin] = (banker + sumPoint*2) * -1;
@@ -181,6 +178,18 @@ new Vue({
         }
         // 胡了
         else if(this.winNo == '0'){
+            // 莊家胡了
+            if(this.userWin == this.banker){
+                note = '莊家' + ' ' + note;
+                sumPoint += banker_point;
+                s.next_banker_count = s.banker_count + 1;
+            }
+            // 莊家被胡
+            else if(this.userLose == this.banker){
+                note = '莊家' + ' ' + note;
+                this.banker_done = true;
+                sumPoint += banker_point;
+            }
             log[this.userWin] = sumPoint;
             log[this.userLose] = -1 * sumPoint;
         }
@@ -206,7 +215,7 @@ new Vue({
         tmp.note = this.note;
         
         this.logs.unshift(tmp);
-        if(this.s.next_banker_count == 0){
+        if(this.banker_done == true){
             this.s.wind_no++;
             this.s.wind_no = (this.s.wind_no > 15) ? 0 : this.s.wind_no;
         }
@@ -215,6 +224,7 @@ new Vue({
         this.set = true;
 
         this.init();
+        $('#new-modal').modal('hide');
     },
 
     showLog: function(log){
@@ -256,6 +266,7 @@ new Vue({
         if(this.settingStep >= 4){
             this.settingStep = -1;
             this.init();
+            $('#users-modal').modal('hide');
         }
 
     },
