@@ -33,6 +33,13 @@
     .margin{
         margin: 2.5px 0 2.5px 0;
     }
+    .div-log{
+        padding:2.5px 0 2.5px 0;
+    }
+    .checkbox-point{
+        padding-top:2.5px;
+        padding-bottom: 2.5px;
+    }
     body {
       padding-top: 50px;
     }
@@ -148,7 +155,7 @@
                 </div>
                 <div class="modal-body">  
                     <div v-show="set == 1">
-                        <div class="row">
+                        <div class="row div-log">
                             <label class="radio-inline">
                                 類型
                             </label> 
@@ -157,7 +164,7 @@
                             </label>        
                         </div>
 
-                        <div class="row" v-show="winNo == 0 || winNo == 1">
+                        <div class="row div-log" v-show="winNo == 0 || winNo == 1">
                             <label class="radio-inline">
                                 贏家
                             </label> 
@@ -167,7 +174,7 @@
                             </label>            
                         </div>
 
-                        <div class="row" v-show="winNo == 0 && userWin >= 0">
+                        <div class="row div-log" v-show="winNo == 0 && userWin >= 0">
                             <label class="radio-inline">
                                 輸家
                             </label> 
@@ -177,11 +184,11 @@
                             </label>          
                         </div>
 
-                        <div class="row" v-show="(winNo == 0 && userWin >= 0 && userLose >= 0) || (winNo == 1 && userWin >= 0)">
+                        <div class="row div-log" v-show="(winNo == 0 && userWin >= 0 && userLose >= 0) || (winNo == 1 && userWin >= 0)">
                             <label class="checkbox-inline">
                                 台數
                             </label> 
-                            <label class="checkbox-inline" v-repeat="kinds | orderBy 'point'" v-show="point">
+                            <label class="checkbox-point checkbox-inline" v-repeat="kinds | orderBy 'point'" v-show="point">
                                 <input type="checkbox" v-model="chk" v-on="click: changeDetail()" > 
                                 <span v-text="name" v-class="
                                 text-muted: (point == 1),
