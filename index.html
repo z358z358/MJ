@@ -33,6 +33,9 @@
         .margin{
             margin: 2.5px 0 2.5px 0;
         }
+        .div-point{
+            margin-left: 21px;
+        }
         .div-log{
             padding:2.5px 0 2.5px 0;
         }
@@ -195,7 +198,7 @@
         </script>     
     </div>
 
-    <pre>{{logs_sum|json}}{{$data|json}}</pre>
+    <!--<pre>{{logs_sum|json}}{{$data|json}}</pre>-->
 
     <!-- 新增紀錄 -->
     <div class="modal fade" id="new-modal" tabindex="-1" role="dialog" aria-labelledby="new-modalLabal" aria-hidden="true">
@@ -240,13 +243,22 @@
                             <label class="checkbox-inline">
                                 台數
                             </label> 
-                            <label class="checkbox-point checkbox-inline" v-repeat="kinds | orderBy 'point'" v-show="point">
-                                <input type="checkbox" v-model="chk" v-on="click: changeDetail()" > 
-                                <span v-text="name" v-class="
-                                text-muted: (point == 1),
-                                text-primary: (point == 2),
-                                text-danger: (point > 2)" ></span>                                                  
-                            </label>            
+                            <div class="div-point">
+                                <label class="checkbox-point checkbox-inline" v-repeat="kinds | orderBy 'point' | kindPoint 1">
+                                    <input type="checkbox" v-model="chk" v-on="click: changeDetail()" > 
+                                    <span class="text-muted" v-text="name"></span>  
+                                </label> 
+                                <br>  
+                                <label class="checkbox-point checkbox-inline" v-repeat="kinds | orderBy 'point' | kindPoint 2">
+                                    <input type="checkbox" v-model="chk" v-on="click: changeDetail()" > 
+                                    <span class="text-primary" v-text="name"></span>  
+                                </label> 
+                                <br>   
+                                <label class="checkbox-point checkbox-inline" v-repeat="kinds | orderBy 'point' | kindPoint 3">
+                                    <input type="checkbox" v-model="chk" v-on="click: changeDetail()" > 
+                                    <span class="text-danger" v-text="name"></span>  
+                                </label> 
+                            </div>                              
                         </div>                        
                     </div>
 

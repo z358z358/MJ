@@ -87,7 +87,7 @@ computed: {
             log.log.map(function(point,index){
                 if(Number(point) !== point || point % 1 !== 0) return;
 
-                console.log(point,index);
+                //console.log(point,index);
                 if(point > 0){
                     tmp['win'][index] = (typeof tmp['win'][index] === 'undefined') ? point : tmp['win'][index] + point;
                 }
@@ -111,7 +111,7 @@ computed: {
 
             }
         });
-        console.log(tmp);
+        //console.log(tmp);
         return tmp;
     }
 
@@ -120,6 +120,12 @@ computed: {
 filters: {
     showMoney: function (price) {
       return (this.s.showMoney) ? price*this.s.point : price;
+  },
+
+  kindPoint: function(kinds, type){
+    return kinds.filter(function(kind){
+        return (type > 2) ? kind.point >= type : kind.point == type;
+    });
   }
 },
 
