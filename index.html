@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-tw">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,43 +24,43 @@
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+      <![endif]-->
 
-    <style type="text/css">
-    .no-padding{
-        padding: 0;
-    } 
-    .margin{
-        margin: 2.5px 0 2.5px 0;
-    }
-    .div-log{
-        padding:2.5px 0 2.5px 0;
-    }
-    .checkbox-point{
-        padding-top:2.5px;
-        padding-bottom: 2.5px;
-    }
-    body {
-      padding-top: 50px;
-    }
-    @media (max-width: 767px){
+      <style type="text/css">
+        .no-padding{
+            padding: 0;
+        } 
+        .margin{
+            margin: 2.5px 0 2.5px 0;
+        }
+        .div-log{
+            padding:2.5px 0 2.5px 0;
+        }
+        .checkbox-point{
+            padding-top:2.5px;
+            padding-bottom: 2.5px;
+        }
+        body {
+          padding-top: 50px;
+      }
+      @media (max-width: 767px){
         #nav-share li {
           display: inline-block;
-        }
-    }
-    </style>
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      }
+  }
+</style>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-  </head>
+</head>
 
-  <body id="mj">
+<body id="mj">
     <!-- Google Tag Manager -->
     <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MNGDS4"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-MNGDS4');</script>
     <!-- End Google Tag Manager -->
 
@@ -68,10 +68,10 @@
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">切換導覽列</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+                    <span class="sr-only">切換導覽列</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href=".">
                     <span class="hidden-xs">麻將紀錄</span>
@@ -109,41 +109,93 @@
         <hr>        
 
         <h3>記錄區 <a href="#" data-toggle="modal" data-target="#new-modal" class="btn btn-primary" v-on="click: set=1">新增紀錄</a></h3>
-        <div class="table-responsive">            
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th>風</th>
-                        <th v-repeat="users" v-text="name"></th> 
-                    </tr>
-                </thead>
-                <tbody v-repeat="logs">
-                    <tr v-on="click: showLog(this)">
-                        <td v-text="winds[wind_count]"></td>
-                        <td v-repeat="log" v-text="$value | showMoney" v-class="text-danger : $value<0"></td>
-                    </tr>
-                    <tr v-show="show">
-                        <td colspan="5"><abbr class="timeago" title="{{ts}}">{{ts}}</abbr> {{ winds[wind_count]}}風{{ winds[wind_count2]}} <span v-text="note"></span></td>                        
-                    </tr>
-                </tbody>
-            </table>
-        </div>    
-        <a href="#" data-toggle="modal" data-target="#confirm-modal" class="btn btn-danger" v-show="logs.length" v-on="click: delBtn=1">刪除最新一筆紀錄</a>
-        <a href="#" data-toggle="modal" data-target="#confirm-modal" class="btn btn-danger" v-show="logs.length" v-on="click: delBtn=2">刪除所有紀錄</a>
-        <a href="#" data-toggle="modal" data-target="#confirm-modal" class="btn btn-danger margin" v-on="click: delBtn=3">回復初始設定</a>
-
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active"><a href="#logs" role="tab" data-toggle="tab">紀錄</a></li>
+            <li class=""><a href="#chart" role="tab" data-toggle="tab">分析</a></li>
+            <li class=""><a href="#log-action" role="tab" data-toggle="tab">功能</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="logs">
+                <div class="table-responsive">            
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>風</th>
+                                <th v-repeat="users" v-text="name"></th> 
+                            </tr>
+                        </thead>
+                        <tbody v-repeat="logs">
+                            <tr v-on="click: showLog(this)">
+                                <td v-text="winds[wind_count]"></td>
+                                <td v-repeat="log" v-text="$value | showMoney" v-class="text-danger : $value<0"></td>
+                            </tr>
+                            <tr v-show="show">
+                                <td colspan="5"><abbr class="timeago" title="{{ts}}">{{ts}}</abbr> {{ winds[wind_count]}}風{{ winds[wind_count2]}} <span v-text="note"></span></td>                        
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>   
+            </div>  
+            <div class="tab-pane" id="chart">
+                <div class="table-responsive">            
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th v-repeat="users" v-text="name"></th> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>累積</td>
+                                <td v-repeat="users" v-text="money | showMoney" v-class="text-danger : money<0"></td> 
+                            </tr>
+                            <tr>
+                                <td>總收入</td>
+                                <td v-repeat="users" v-text="logs_sum['win'][$index] | showMoney" ></td> 
+                            </tr>
+                            <tr>
+                                <td>總支出</td>
+                                <td class="text-danger" v-repeat="users" v-text="logs_sum['lose'][$index] | showMoney"></td> 
+                            </tr>
+                            <tr>
+                                <td>自摸次數</td>
+                                <td v-repeat="users" v-text="logs_sum['self'][$index]"></td> 
+                            </tr>
+                            <tr>
+                                <td>胡人次數</td>
+                                <td v-repeat="users" v-text="logs_sum['winCount'][$index]"></td> 
+                            </tr>
+                            <tr>
+                                <td>放槍次數</td>
+                                <td v-repeat="users" v-text="logs_sum['loseCount'][$index]"></td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>   
+            </div>
+            <div class="tab-pane" id="log-action">
+                <div class="table-responsive"><a href="#" data-toggle="modal" data-target="#confirm-modal" class="btn btn-danger" v-show="logs.length" v-on="click: delBtn=1">刪除最新一筆紀錄</a>
+                    <a href="#" data-toggle="modal" data-target="#confirm-modal" class="btn btn-danger" v-show="logs.length" v-on="click: delBtn=2">刪除所有紀錄</a>
+                    <a href="#" data-toggle="modal" data-target="#confirm-modal" class="btn btn-danger margin" v-on="click: delBtn=3">回復初始設定</a>                    
+                </div>
+            </div>
+        </div>     
+        
         <hr>
 
         <!-- ad -->
         <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-5518310153941700"
-         data-ad-slot="5554403276"
-         data-ad-format="auto"></ins>
-         <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
+        style="display:block"
+        data-ad-client="ca-pub-5518310153941700"
+        data-ad-slot="5554403276"
+        data-ad-format="auto"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
         </script>     
     </div>
+
+    <pre>{{logs_sum|json}}{{$data|json}}</pre>
 
     <!-- 新增紀錄 -->
     <div class="modal fade" id="new-modal" tabindex="-1" role="dialog" aria-labelledby="new-modalLabal" aria-hidden="true">
@@ -203,156 +255,156 @@
                             <label class="col-xs-6 col-sm-3" v-repeat="users">
                               <span class="col-xs-6 col-sm-5 no-padding" v-text="name" v-class="text-success: wind_count2 == wind"></span>
                               <input class="col-xs-6 col-sm-7 no-padding" type="number" v-model="log[$index]">
-                            </label>     
-                        </div>
-                        <div class="">
-                            <label class="">莊家下莊
-                                <input type="checkbox" v-model="banker_done">
-                            </label>                            
-                        </div>  
-                        <div class="form-group">
-                            <label class="control-label">下一局連莊數</label> 
-                            <input type="number" class="form-control" v-model="s.next_banker_count">                           
-                        </div>  
-                             
-                        <div class="form-group">
-                            <label class="control-label">備註</label> 
-                            <input type="text" class="form-control" v-model="note">                            
-                        </div>                       
-                    </div>        
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-default" v-show="set == 2" v-on="click: set=1">回上一步</button>
-                    <button class="btn btn-primary" v-show="set == 1 && ((winNo == 0 && userWin >= 0 && userLose >= 0) || (winNo == 1 && userWin >= 0) || winNo == 2)" v-on="click: set=2">下一步</button>
-                    <button class="btn btn-primary" v-show="set == 2" v-on="click: insertLog()">確認無誤</button>
-                    <button class="btn btn-default" data-dismiss="modal" v-on="click:set = 0" >取消</button> 
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 修改玩家 -->
-    <div class="modal fade" id="users-modal" tabindex="-1" role="dialog" aria-labelledby="users-modalLabal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="users-modalLabel">修改玩家名稱，風位</h4>
-                </div>
-                <div class="modal-body">  
+                          </label>     
+                      </div>
+                      <div class="">
+                        <label class="">莊家下莊
+                            <input type="checkbox" v-model="banker_done">
+                        </label>                            
+                    </div>  
                     <div class="form-group">
-                        <label class="control-label" for="inputSuccess1">玩家名稱</label>
-                        <input type="text" class="form-control" v-model="users[settingStep]['name']" placeholder="名稱">
-                    </div>
+                        <label class="control-label">下一局連莊數</label> 
+                        <input type="number" class="form-control" v-model="s.next_banker_count">                           
+                    </div>  
+
                     <div class="form-group">
-                        <label class="control-label" for="inputSuccess1">風位</label>
-                        <button type="button" class="btn btn-default btn-lg" v-repeat="winds" v-show="windArray.indexOf($index) == -1" v-on="click: setWind($index)" v-text="$value"></button>   
-                    </div>         
-                </div>
+                        <label class="control-label">備註</label> 
+                        <input type="text" class="form-control" v-model="note">                            
+                    </div>                       
+                </div>        
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" v-show="set == 2" v-on="click: set=1">回上一步</button>
+                <button class="btn btn-primary" v-show="set == 1 && ((winNo == 0 && userWin >= 0 && userLose >= 0) || (winNo == 1 && userWin >= 0) || winNo == 2)" v-on="click: set=2">下一步</button>
+                <button class="btn btn-primary" v-show="set == 2" v-on="click: insertLog()">確認無誤</button>
+                <button class="btn btn-default" data-dismiss="modal" v-on="click:set = 0" >取消</button> 
             </div>
         </div>
     </div>
+</div>
 
-    <!-- 修改設定 -->
-    <div class="modal fade" id="setting-modal" tabindex="-1" role="dialog" aria-labelledby="setting-modalLabal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="setting-modalLabel">修改設定</h4>
+<!-- 修改玩家 -->
+<div class="modal fade" id="users-modal" tabindex="-1" role="dialog" aria-labelledby="users-modalLabal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="users-modalLabel">修改玩家名稱，風位</h4>
+            </div>
+            <div class="modal-body">  
+                <div class="form-group">
+                    <label class="control-label" for="inputSuccess1">玩家名稱</label>
+                    <input type="text" class="form-control" v-model="users[settingStep]['name']" placeholder="名稱">
                 </div>
-                <div class="modal-body">              
-
-                    <label>底幾台
-                        <input type="number" class="form-control" v-model="s.basic">
-                    </label>
-
-                    <label>一台多少錢
-                        <input type="number" class="form-control" v-model="s.point">
-                    </label>
-
-                    <label>
-                        <input type="checkbox" v-model="s.showMoney"> 顯示為金錢
-                    </label>
-                    <hr>
-
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>名稱</th>
-                                <th>台數</th> 
-                                <th><button type="button" class="btn btn-primary" v-on="click:addKind">新增</button></th> 
-                            </tr>
-                        </thead>
-                        <tbody v-repeat="kinds | orderBy 'point'">
-                            <tr>
-                                <td><input type="text" class="form-control" v-model="name"></td>
-                                <td><input type="number" class="form-control " v-model="point"></td>
-                                <td><button type="button" class="btn btn-danger" v-on="click:removeKind(this)">刪除</button></td>
-                            </tr>
-                        </tbody>
-                    </table>                    
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">確定</button>
-                </div>
+                <div class="form-group">
+                    <label class="control-label" for="inputSuccess1">風位</label>
+                    <button type="button" class="btn btn-default btn-lg" v-repeat="winds" v-show="windArray.indexOf($index) == -1" v-on="click: setWind($index)" v-text="$value"></button>   
+                </div>         
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="disqus-modal" tabindex="-1" role="dialog" aria-labelledby="disqus-modalLabal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="disqus-modalLabel">留言</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="alert alert-info" role="alert">歡迎提供意見!</div>
-                    <div id="disqus_thread"></div>
-                    <noscript>請開啟 javascript 來檢視 <a href="https://disqus.com/?ref_noscript">Disqus 提供的留言</a></noscript>
-                </div>
+<!-- 修改設定 -->
+<div class="modal fade" id="setting-modal" tabindex="-1" role="dialog" aria-labelledby="setting-modalLabal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="setting-modalLabel">修改設定</h4>
+            </div>
+            <div class="modal-body">              
+
+                <label>底幾台
+                    <input type="number" class="form-control" v-model="s.basic">
+                </label>
+
+                <label>一台多少錢
+                    <input type="number" class="form-control" v-model="s.point">
+                </label>
+
+                <label>
+                    <input type="checkbox" v-model="s.showMoney"> 顯示為金錢
+                </label>
+                <hr>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>名稱</th>
+                            <th>台數</th> 
+                            <th><button type="button" class="btn btn-primary" v-on="click:addKind">新增</button></th> 
+                        </tr>
+                    </thead>
+                    <tbody v-repeat="kinds | orderBy 'point'">
+                        <tr>
+                            <td><input type="text" class="form-control" v-model="name"></td>
+                            <td><input type="number" class="form-control " v-model="point"></td>
+                            <td><button type="button" class="btn btn-danger" v-on="click:removeKind(this)">刪除</button></td>
+                        </tr>
+                    </tbody>
+                </table>                    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">確定</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-modalLabal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="disqus-modalLabel">確定要執行?</h4>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" data-dismiss="modal" v-show="delBtn == 1" v-on="click: deleteLog()" >刪除最新一筆紀錄</button>
-                    <button class="btn btn-danger" data-dismiss="modal" v-show="delBtn == 2" v-on="click: deleteLog('all')">刪除所有紀錄</button>
-                    <button class="btn btn-danger" data-dismiss="modal" v-show="delBtn == 3" v-on="click: reset()">回復初始設定</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                </div>
+<div class="modal fade" id="disqus-modal" tabindex="-1" role="dialog" aria-labelledby="disqus-modalLabal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="disqus-modalLabel">留言</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert">歡迎提供意見!</div>
+                <div id="disqus_thread"></div>
+                <noscript>請開啟 javascript 來檢視 <a href="https://disqus.com/?ref_noscript">Disqus 提供的留言</a></noscript>
             </div>
         </div>
     </div>
+</div>
 
-    <script src="asset/jquery-1.11.3.min.js"></script>
-    <script src="asset/jquery.cookie.js"></script>
-    <script src="asset/jquery.timeago.js?205073101"></script>
-    <script src="asset/bootstrap.min.js"></script>
-    <script src="asset/vue.min.js"></script>
-    <script src="asset/my.js?2015071602"></script>    
-    
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES * * */
-        var disqus_shortname = 'mj-tw';
-        var disqus_config = function () { 
-          this.language = "zh_TW";
-        };        
-        
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-  </body>
+<div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-modalLabal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="disqus-modalLabel">確定要執行?</h4>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal" v-show="delBtn == 1" v-on="click: deleteLog()" >刪除最新一筆紀錄</button>
+                <button class="btn btn-danger" data-dismiss="modal" v-show="delBtn == 2" v-on="click: deleteLog('all')">刪除所有紀錄</button>
+                <button class="btn btn-danger" data-dismiss="modal" v-show="delBtn == 3" v-on="click: reset()">回復初始設定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="asset/jquery-1.11.3.min.js"></script>
+<script src="asset/jquery.cookie.js"></script>
+<script src="asset/jquery.timeago.js?205073101"></script>
+<script src="asset/bootstrap.min.js"></script>
+<script src="asset/vue.min.js"></script>
+<script src="asset/my.js?2015071602"></script>    
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'mj-tw';
+    var disqus_config = function () { 
+      this.language = "zh_TW";
+  };        
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+</body>
 </html>

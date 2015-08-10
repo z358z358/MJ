@@ -4,10 +4,10 @@ new Vue({
   el: '#mj',
   data: {
     users: [
-        {name:'玩家1', wind:0, money:0, no:0},
-        {name:'玩家2', wind:1, money:0, no:1},
-        {name:'玩家3', wind:2, money:0, no:2},
-        {name:'玩家4', wind:3, money:0, no:3}
+    {name:'玩家1', wind:0, money:0, no:0},
+    {name:'玩家2', wind:1, money:0, no:1},
+    {name:'玩家3', wind:2, money:0, no:2},
+    {name:'玩家4', wind:3, money:0, no:3}
     ],
 
     logs:[],
@@ -26,67 +26,108 @@ new Vue({
     winType:['胡', '自摸', '流局', '自行輸入log'],
     winds: ['東' , '南' , '西' , '北'],
     kinds:[
-        {name:'門清', point:1},
-        {name:'門清一摸三', point:2},
-        {name:'風台', point:1},
-        {name:'雙風台', point:2},
-        {name:'三元台', point:1},
-        {name:'雙三元台', point:2},
-        {name:'花牌', point:1},
-        {name:'雙花牌', point:2},
-        {name:'八仙過海,七搶一', point:8},
-        {name:'清一色', point:8},
-        {name:'湊一色', point:4},
-        {name:'五暗坎', point:8},
-        {name:'四暗坎', point:5},
-        {name:'三暗坎', point:2},
-        {name:'碰碰胡', point:4},
-        {name:'平胡', point:2},
-        {name:'全求', point:2},
-        {name:'獨聽', point:1},
-        {name:'搶槓', point:1},
-        {name:'槓上開花', point:1},
-        {name:'海底撈月', point:1},
-        {name:'天胡', point:24},
-        {name:'地胡', point:16},
-        {name:'人胡', point:8},
-        {name:'大四喜', point:16},
-        {name:'小四喜', point:8},
-        {name:'大三元', point:8},
-        {name:'小三元', point:4},
-        {name:'字一色', point:8},
+    {name:'門清', point:1},
+    {name:'門清一摸三', point:2},
+    {name:'風台', point:1},
+    {name:'雙風台', point:2},
+    {name:'三元台', point:1},
+    {name:'雙三元台', point:2},
+    {name:'花牌', point:1},
+    {name:'雙花牌', point:2},
+    {name:'八仙過海,七搶一', point:8},
+    {name:'清一色', point:8},
+    {name:'湊一色', point:4},
+    {name:'五暗坎', point:8},
+    {name:'四暗坎', point:5},
+    {name:'三暗坎', point:2},
+    {name:'碰碰胡', point:4},
+    {name:'平胡', point:2},
+    {name:'全求', point:2},
+    {name:'獨聽', point:1},
+    {name:'搶槓', point:1},
+    {name:'槓上開花', point:1},
+    {name:'海底撈月', point:1},
+    {name:'天胡', point:24},
+    {name:'地胡', point:16},
+    {name:'人胡', point:8},
+    {name:'大四喜', point:16},
+    {name:'小四喜', point:8},
+    {name:'大三元', point:8},
+    {name:'小三元', point:4},
+    {name:'字一色', point:8},
     ]    
-  },
+},
 
-  watch: {
+watch: {
     // timeago
     'logs': function (val, oldVal) {
       jQuery("abbr.timeago").timeago();
-    }
-  },
+  }
+},
 
-  computed: {
+computed: {
     wind_count:function(){
         return Math.floor(this.s.wind_no/4);
     },
 
     wind_count2:function(){
         return this.s.wind_no%4;
+    },
+
+    logs_sum:function(){
+        var tmp = {
+            win:[],
+            lose:[],
+            self:[],
+            winCount:[],
+            loseCount:[],
+        };
+        this.logs.map(function(log){
+
+            log.log.map(function(point,index){
+                if(Number(point) !== point || point % 1 !== 0) return;
+
+                console.log(point,index);
+                if(point > 0){
+                    tmp['win'][index] = (typeof tmp['win'][index] === 'undefined') ? point : tmp['win'][index] + point;
+                }
+                else{
+                    tmp['lose'][index] = (typeof tmp['lose'][index] === 'undefined') ? point : tmp['lose'][index] + point;
+                }                
+            });
+
+            var index = 0;
+            // 自摸
+            if(log.winNo == '1'){
+                index = log.userWin;
+                tmp['self'][index] = (typeof tmp['self'][index] === 'undefined') ? 1 : tmp['self'][index] + 1;                
+            }
+            // 湖人
+            else if(log.winNo == '0'){
+                index = log.userWin;
+                tmp['winCount'][index] = (typeof tmp['winCount'][index] === 'undefined') ? 1 : tmp['winCount'][index] + 1;                
+                index = log.userLose;
+                tmp['loseCount'][index] = (typeof tmp['loseCount'][index] === 'undefined') ? 1 : tmp['loseCount'][index] + 1;                
+
+            }
+        });
+        console.log(tmp);
+        return tmp;
     }
 
-  },
+},
 
-  filters: {
+filters: {
     showMoney: function (price) {
       return (this.s.showMoney) ? price*this.s.point : price;
-    }
-  },
+  }
+},
 
-  ready: function(){
+ready: function(){
     this.init('first');    
-  },
+},
 
-  methods:{
+methods:{
     init: function(type){
         var that = this;
         var tmpKinds = [];
@@ -216,6 +257,9 @@ new Vue({
         tmp.wind_count2 = this.wind_count2;
         tmp.log = this.log;
         tmp.note = this.note;
+        tmp.userLose = this.userLose;
+        tmp.userWin = this.userWin;
+        tmp.winNo = this.winNo;
         
         this.logs.unshift(tmp);
         if(this.banker_done == true){
@@ -294,7 +338,7 @@ new Vue({
         location.reload( );
     }
 
-  }
+}
 
 });
 
@@ -310,10 +354,10 @@ function data(key, value, del){
         else{
             var cookies = $.cookie();
             for(var cookie in cookies) {
-               $.removeCookie(cookie);
-            }
-        }
-    }
+             $.removeCookie(cookie);
+         }
+     }
+ }
     // 寫 
     else if(value !== undefined){
         if(type == 's'){
