@@ -134,7 +134,7 @@
                             </tr>
                             <tr v-show="edit">
                                 <td v-text="winds[wind_count]"></td>
-                                <td v-repeat="log"><input type="text" v-model="$value"></td>                   
+                                <td v-repeat="log"><input class="no-padding col-xs-12" type="text" v-model="$value"></td>                  
                             </tr>
                             <tr v-show="show">
                                 <td colspan="5"><abbr class="timeago" title="{{ts}}">{{ts}}</abbr> {{ winds[wind_count]}}風{{ winds[wind_count2]}} <span v-text="note"></span><button class="pull-right btn btn-danger" v-on="click:editLog(this)">修改</button></td>                        
