@@ -134,7 +134,7 @@
                             </tr>
                             <tr v-show="edit">
                                 <td v-text="winds[wind_count]"></td>
-                                <td v-repeat="log"><input class="no-padding col-xs-12" type="number" v-model="$value"></td>                  
+                                <td v-repeat="log"><input class="no-padding col-xs-12" type="number" v-model="$value" number></td>                  
                             </tr>
                             <tr v-show="show">
                                 <td colspan="5"><abbr class="timeago" title="{{ts}}">{{ts}}</abbr> {{ winds[wind_count]}}風{{ winds[wind_count2]}} <span v-text="note"></span><button class="pull-right btn btn-danger" v-on="click:editLog(this)">修改</button></td>                        
@@ -202,7 +202,7 @@
         </script>     
     </div>
 
-    <pre>{{logs_sum|json}}{{$data|json}}</pre>
+    <!--<pre>{{logs_sum|json}}{{$data|json}}</pre>-->
 
     <!-- 新增紀錄 -->
     <div class="modal fade" id="new-modal" tabindex="-1" role="dialog" aria-labelledby="new-modalLabal" aria-hidden="true">
@@ -270,7 +270,7 @@
                         <div class="row">
                             <label class="col-xs-6 col-sm-3" v-repeat="users">
                               <span class="col-xs-6 col-sm-5 no-padding" v-text="name" v-class="text-success: wind_count2 == wind"></span>
-                              <input class="col-xs-6 col-sm-7 no-padding" type="number" v-model="log[$index]">
+                              <input class="col-xs-6 col-sm-7 no-padding" type="number" v-model="log[$index]" number>
                           </label>     
                       </div>
                       <div class="">
