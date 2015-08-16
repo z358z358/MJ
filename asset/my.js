@@ -342,6 +342,12 @@ methods:{
     reset: function(){
         data('' , '', 'del');
         location.reload( );
+    },
+
+    editLog: function(log){
+        var edit = (log.edit) ? 0 : 1;
+        log.$set('edit' , edit);
+        this.init();
     }
 
 }
