@@ -89,7 +89,8 @@ computed: {
         this.logs.map(function(log){
 
             log.log.map(function(point,index){
-                if(Number(point) !== point || point % 1 !== 0) return;
+                point = Number(point);
+                if(point === 0 || point % 1 !== 0) return;
 
                 //console.log(point,index);
                 if(point > 0){
@@ -360,6 +361,12 @@ methods:{
     reset: function(){
         data('' , '', 'del');
         location.reload( );
+    },
+
+    editLog: function(log){
+        var edit = (log.edit) ? 0 : 1;
+        log.$set('edit' , edit);
+        this.init();
     }
 
 }

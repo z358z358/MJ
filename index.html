@@ -130,13 +130,18 @@
                             </tr>
                         </thead>
                         <tbody v-repeat="logs">
-                            <tr v-on="click: showLog(this)">
+                            <tr v-show="!edit" v-on="click: showLog(this)">
                                 <td v-text="winds[wind_count]"></td>
                                 <td v-repeat="log" v-text="$value | showMoney" v-class="text-danger : $value<0"></td>
                             </tr>
-                            <tr v-show="show">
-                                <td colspan="5"><abbr class="timeago" title="{{ts}}">{{ts}}</abbr> {{ winds[wind_count]}}風{{ winds[wind_count2]}} <span v-text="note"></span></td>                        
+                            <tr v-show="edit">
+                                <td v-text="winds[wind_count]"></td>
+                                <td v-repeat="log"><input class="no-padding col-xs-12" type="number" v-model="$value" number></td>                  
                             </tr>
+                            <tr v-show="show">
+                                <td colspan="5"><abbr class="timeago" title="{{ts}}">{{ts}}</abbr> {{ winds[wind_count]}}風{{ winds[wind_count2]}} <span v-text="note"></span><button class="pull-right btn btn-danger" v-on="click:editLog(this)">修改</button></td>                        
+                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>   
@@ -188,7 +193,6 @@
         </div>     
         
         <hr>
-
         <!-- ad -->
         <ins class="adsbygoogle"
         style="display:block"
@@ -354,6 +358,14 @@
 
                 <label>
                     <input type="checkbox" v-model="s.showMoney"> 顯示為金錢
+                </label>
+
+                <label>風位 東風東=0 北風北=15
+                    <input type="number" class="form-control" v-model="s.wind_no">
+                </label>
+
+                <label>連莊數
+                    <input type="number" class="form-control" v-model="s.banker_count">
                 </label>
                 <hr>
                 <label>
