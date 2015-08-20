@@ -40,6 +40,8 @@
             padding:2.5px 0 2.5px 0;
         }
         .checkbox-point{
+            padding-left: 10px;
+            padding-right: 10px;
             padding-top:2.5px;
             padding-bottom: 2.5px;
         }
@@ -198,7 +200,7 @@
         </script>     
     </div>
 
-    <!--<pre>{{logs_sum|json}}{{$data|json}}</pre>-->
+    <!--<pre>{{$data|json}}</pre>-->
 
     <!-- 新增紀錄 -->
     <div class="modal fade" id="new-modal" tabindex="-1" role="dialog" aria-labelledby="new-modalLabal" aria-hidden="true">
@@ -243,7 +245,7 @@
                             <label class="checkbox-inline">
                                 台數
                             </label> 
-                            <div class="div-point">
+                            <div class="div-point" v-show="s.useKind != 'point'">
                                 <label class="checkbox-point checkbox-inline" v-repeat="kinds | orderBy 'point' | kindPoint 1">
                                     <input type="checkbox" v-model="chk" v-on="click: changeDetail()" > 
                                     <span class="text-muted" v-text="name"></span>  
@@ -258,41 +260,56 @@
                                     <input type="checkbox" v-model="chk" v-on="click: changeDetail()" > 
                                     <span class="text-danger" v-text="name"></span>  
                                 </label> 
-                            </div>                              
-                        </div>                        
-                    </div>
+                            </div>
 
-                    <div v-show="set == 2">
+                            <div class="div-point" v-show="s.useKind == 'point'">                                
+                                <label class="checkbox-point checkbox-inline" v-repeat="chose_point">
+                                    <input type="radio" v-model="chosePoint" value="{{$value}}" v-on="click: changeDetail()" > 
+                                    <span class="" v-text="$value"></span>  
+                                </label>                                
+                            </div>                                  
+                        </div>
+
+                        <hr/>
                         <div class="row">
-                            <label class="col-xs-6 col-sm-3" v-repeat="users">
+                            <label class="col-xs-6 col-sm-3" v-repeat="users" v-show="log[$index]">
                               <span class="col-xs-6 col-sm-5 no-padding" v-text="name" v-class="text-success: wind_count2 == wind"></span>
-                              <input class="col-xs-6 col-sm-7 no-padding" type="number" v-model="log[$index]">
+                              <span class="col-xs-6 col-sm-7 no-padding" v-class="text-danger:log[$index] < 0" v-text="log[$index]"></span>
                           </label>     
-                      </div>
-                      <div class="">
-                        <label class="">莊家下莊
-                            <input type="checkbox" v-model="banker_done">
-                        </label>                            
-                    </div>  
-                    <div class="form-group">
-                        <label class="control-label">下一局連莊數</label> 
-                        <input type="number" class="form-control" v-model="s.next_banker_count">                           
-                    </div>  
+                      </div>                        
+                  </div>
 
-                    <div class="form-group">
-                        <label class="control-label">備註</label> 
-                        <input type="text" class="form-control" v-model="note">                            
-                    </div>                       
-                </div>        
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" v-show="set == 2" v-on="click: set=1">回上一步</button>
-                <button class="btn btn-primary" v-show="set == 1 && ((winNo == 0 && userWin >= 0 && userLose >= 0) || (winNo == 1 && userWin >= 0) || winNo == 2)" v-on="click: set=2">下一步</button>
-                <button class="btn btn-primary" v-show="set == 2" v-on="click: insertLog()">確認無誤</button>
-                <button class="btn btn-default" data-dismiss="modal" v-on="click:set = 0" >取消</button> 
-            </div>
+                  <div v-show="set == 2">
+                    <div class="row">
+                        <label class="col-xs-6 col-sm-3" v-repeat="users">
+                          <span class="col-xs-6 col-sm-5 no-padding" v-text="name" v-class="text-success: wind_count2 == wind"></span>
+                          <input class="col-xs-6 col-sm-7 no-padding" type="number" v-model="log[$index]">
+                      </label>     
+                  </div>
+                  <div class="">
+                    <label class="">莊家下莊
+                        <input type="checkbox" v-model="banker_done">
+                    </label>                            
+                </div>  
+                <div class="form-group">
+                    <label class="control-label">下一局連莊數</label> 
+                    <input type="number" class="form-control" v-model="s.next_banker_count">                           
+                </div>  
+
+                <div class="form-group">
+                    <label class="control-label">備註</label> 
+                    <input type="text" class="form-control" v-model="note">                            
+                </div>                       
+            </div>        
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" v-show="set == 2" v-on="click: set=1">回上一步</button>
+            <button class="btn btn-primary" v-show="set == 1 && ((winNo == 0 && userWin >= 0 && userLose >= 0) || (winNo == 1 && userWin >= 0) || winNo == 2)" v-on="click: set=2">下一步</button>
+            <button class="btn btn-primary" v-show="set == 2" v-on="click: insertLog()">確認無誤</button>
+            <button class="btn btn-default" data-dismiss="modal" v-on="click:set = 0" >取消</button> 
         </div>
     </div>
+</div>
 </div>
 
 <!-- 修改玩家 -->
@@ -339,8 +356,22 @@
                     <input type="checkbox" v-model="s.showMoney"> 顯示為金錢
                 </label>
                 <hr>
+                <label>
+                    <input type="radio" v-model="s.useKind" value="kind"> 使用台數
+                </label>
+                <label>
+                    <input type="radio" v-model="s.useKind" value="point"> 使用純台數
+                </label>
 
-                <table class="table table-striped">
+                <hr>
+
+                <div>
+                    <label v-show="s.useKind == 'point'">最多幾台
+                        <input type="number" class="form-control" v-model="s.maxChosePoint">
+                    </label>
+                </div>
+
+                <table class="table table-striped" v-show="s.useKind != 'point'">
                     <thead>
                         <tr>
                             <th>名稱</th>

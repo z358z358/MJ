@@ -14,6 +14,8 @@ new Vue({
     settingStep:-1,
     dataSetting:false,
     windArray:[],
+    chosePoint: 0,
+    
 
     s: {
         basic : 2, // 底幾台
@@ -21,7 +23,9 @@ new Vue({
         wind_no : 0, // 在哪個風 東風東=0 東風南=1 北風北=15
         banker_count : 0, // 連莊數
         next_banker_count : 0, // 下一輪 莊連
-        showMoney: false
+        showMoney: false,
+        useKind: 'kind',
+        maxChosePoint: 10
     },    
     winType:['胡', '自摸', '流局', '自行輸入log'],
     winds: ['東' , '南' , '西' , '北'],
@@ -113,6 +117,15 @@ computed: {
         });
         //console.log(tmp);
         return tmp;
+    },
+
+    chose_point:function(){
+        var max = this.s.maxChosePoint;
+        var tmp = [];
+        for(var i = 1;i <= max; i++){
+            tmp.push(i);
+        }
+        return tmp;
     }
 
 },
@@ -139,7 +152,7 @@ methods:{
         var tmpKinds = [];
         if(type == 'first'){
             this.logs = (data('mjLogs')) ? data('mjLogs') : [];
-            this.s = (data('s')) ? data('s') : this.s;
+            this.s = (data('s') && Object.keys(data('s')).length == Object.keys(this.s).length) ? data('s') : this.s;
             this.users = (data('users')) ? data('users') : this.users;
             this.kinds = (data('kinds')) ? data('kinds') : this.kinds;
         }
@@ -189,12 +202,17 @@ methods:{
         this.banker_done = false;
         s.next_banker_count = 0;
 
-        kinds.map(function(kind){
-            if(kind.chk == true) {
-                sumPoint+= kind['point'];
-                note = note + ' ' + kind['name'];
-            }            
-        });
+        if(this.s.useKind == 'point'){
+            sumPoint += parseFloat(this.chosePoint);
+        }
+        else{
+            kinds.map(function(kind){
+                if(kind.chk == true) {
+                    sumPoint+= kind['point'];
+                    note = note + ' ' + kind['name'];
+                }            
+            });
+        }
 
         // 劉菊
         if(this.winNo == '2'){
