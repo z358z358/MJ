@@ -123,7 +123,7 @@ computed: {
     chose_point:function(){
         var max = this.s.maxChosePoint;
         var tmp = [];
-        for(var i = 1;i <= max; i++){
+        for(var i = 0;i <= max; i++){
             tmp.push(i);
         }
         return tmp;
@@ -169,6 +169,7 @@ methods:{
         this.$set('banker', banker);
         this.$set('banker_done', false);
         this.$set('delBtn', 0);
+        this.$set('chosePoint', 0);
 
         for (var i = this.users.length - 1; i >= 0; i--) {
             this.users[i]['money'] = 0;
