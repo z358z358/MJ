@@ -66,7 +66,7 @@ watch: {
     // timeago
     'logs': function (val, oldVal) {
       jQuery("abbr.timeago").timeago();
-  }
+  },
 },
 
 computed: {
@@ -144,7 +144,12 @@ filters: {
 },
 
 ready: function(){
-    this.init('first');    
+    this.init('first'); 
+    this.$watch('winNo', this.changeDetail); 
+    this.$watch('userWin', this.changeDetail); 
+    this.$watch('userLose', this.changeDetail);   
+    this.$watch('chosePoint', this.changeDetail);   
+    this.$watch('kinds', this.changeDetail, {deep: true});   
 },
 
 methods:{

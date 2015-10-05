@@ -221,7 +221,7 @@
                                 類型
                             </label> 
                             <label class="radio-inline" v-repeat="winType">
-                                <input type="radio" name="type" value="{{ $index }}" v-model="winNo" v-on="click: changeDetail()"> {{ $value }}
+                                <input type="radio" name="type" value="{{ $index }}" v-model="winNo"> {{ $value }}
                             </label>        
                         </div>
 
@@ -230,7 +230,7 @@
                                 贏家
                             </label> 
                             <label class="radio-inline" v-repeat="users">
-                                <input type="radio" value="{{ $index }}" v-model="userWin" v-on="click: changeDetail()">
+                                <input type="radio" value="{{ $index }}" v-model="userWin">
                                 <span v-text="name" v-class="text-success: wind_count2 == wind"></span>
                             </label>            
                         </div>
@@ -240,7 +240,7 @@
                                 輸家
                             </label> 
                             <label class="radio-inline" v-repeat="users" v-show="$index != userWin">
-                                <input type="radio" value="{{ $index }}" v-model="userLose" v-on="click: changeDetail()"> 
+                                <input type="radio" value="{{ $index }}" v-model="userLose"> 
                                 <span v-text="name" v-class="text-success: wind_count2 == wind"></span>
                             </label>          
                         </div>
@@ -251,24 +251,24 @@
                             </label> 
                             <div class="div-point" v-show="s.useKind != 'point'">
                                 <label class="checkbox-point checkbox-inline" v-repeat="kinds | orderBy 'point' | kindPoint 1">
-                                    <input type="checkbox" v-model="chk" v-on="click: changeDetail()" > 
+                                    <input type="checkbox" v-model="chk" > 
                                     <span class="text-muted" v-text="name"></span>  
                                 </label> 
                                 <br>  
                                 <label class="checkbox-point checkbox-inline" v-repeat="kinds | orderBy 'point' | kindPoint 2">
-                                    <input type="checkbox" v-model="chk" v-on="click: changeDetail()" > 
+                                    <input type="checkbox" v-model="chk"> 
                                     <span class="text-primary" v-text="name"></span>  
                                 </label> 
                                 <br>   
                                 <label class="checkbox-point checkbox-inline" v-repeat="kinds | orderBy 'point' | kindPoint 3">
-                                    <input type="checkbox" v-model="chk" v-on="click: changeDetail()" > 
+                                    <input type="checkbox" v-model="chk"> 
                                     <span class="text-danger" v-text="name"></span>  
                                 </label> 
                             </div>
 
                             <div class="div-point" v-show="s.useKind == 'point'">                                
                                 <label class="checkbox-point checkbox-inline" v-repeat="chose_point">
-                                    <input type="radio" v-model="chosePoint" value="{{$value}}" v-on="click: changeDetail()" > 
+                                    <input type="radio" v-model="chosePoint" value="{{$value}}"> 
                                     <span class="" v-text="$value"></span>  
                                 </label>                                
                             </div>                                  
